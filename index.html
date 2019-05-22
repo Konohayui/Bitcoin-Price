@@ -1,11 +1,15 @@
-<html>
+<!DOCTYPE html>
+<html lang = "en">
     <head>
+        <meta charset = "UTF-8">
         <link rel="stylesheet" href="css/index.css">
         <title>Bitcoin Price in the Past 30 Days</title>
     </head>
     <body>
-        <center><h1>Bitcoin Price in the Past 30 Days</h1></center>
-        
+        <div id = "wholepage" class = "center">
+        <div class = "header"><h1>Bitcoin Price in the Past 30 Days</h1></div>
+        <hr>
+                
         <!--
         <from action = "/action_page.php">
         Start Date: <input type = "text" name = "StateDate" id = "StateDate", value = "2018-12-31"><br>
@@ -13,12 +17,16 @@
         <input type = "submit" value = "submit">
         </from>
         -->
-        <p></p>
         
-        <center><svg class="line-chart"></svg></center>
+        <br>
+        
+        <svg class="line-chart"></svg>
+        
+        <hr>
+        <div class = "footer"><p>Data is from <a href = "https://www.coindesk.com/"> coindesk </a >.</p></div>
+        </div>
         
         <script src="https://d3js.org/d3.v4.min.js"></script>
         <script src="JavaScript/index.js"></script>
     </body>
 </html>
-
