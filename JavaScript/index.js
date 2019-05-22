@@ -52,12 +52,14 @@ var svg = d3.select('svg')
 var g = svg.append("g")
            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+// define range and domain
 var x = d3.scaleTime()
           .range([0, width]);
 
 var y = d3.scaleLinear()
           .range([height, 0]);
 
+// define x-axis and y-axis
 var xAxis = d3.axisBottom()
               .scale(x)
               .tickSize(-height);
@@ -65,23 +67,27 @@ var xAxis = d3.axisBottom()
 var yAxis = d3.axisLeft()
               .scale(y);
 
+// define area and line
 var area = d3.area()
              .x(function(d) { return x(d.date); })
              .y0(height)
              .y1(function(d) { return y(d.value); });
              
 var line = d3.line()
-             .x(function(d) { return x(d.date)})
-             .y(function(d) { return y(d.value)})
+             .x(function(d) { return x(d.date); })
+             .y(function(d) { return y(d.value); })
     
-x.domain(d3.extent(data, function(d) { return d.date }));
-y.domain(d3.extent(data, function(d) { return d.value }));
+// scale range of data
+x.domain(d3.extent(data, function(d) { return d.date; }));
+y.domain(d3.extent(data, function(d) { return d.value; }));
 
+// add x axis
 g.append("g")
  .attr("transform", "translate(0," + height + ")")
  .call(d3.axisBottom(x))
  .select(".domain");
 
+// add y axis
 g.append("g")
  .call(d3.axisLeft(y))
  .append("text")
@@ -92,11 +98,13 @@ g.append("g")
  .attr("text-anchor", "end")
  .text("Price ($)");
 
+// add area under line
 g.append("path")
  .datum(data)
  .attr("class", "area")
  .attr("d", area);
  
+// add line
 g.append("path")
  .datum(data)
  .attr("class", "line")
@@ -115,7 +123,7 @@ g.append("path")
 //         i = Math.floor(Math.random() * n / 2),
 //         j = i + Math.floor(Math.random() * n / 2) + 1;
 //     x.domain([data[i].date, data[j].date]);
-//     var t = g.transition().duration(750);
+//     var t = g.transition().duration(15);
 //     t.select(".x.axis").call(xAxis);
 //     t.select(".area").attr("d", area);
 //     t.select(".line").attr("d", line);
