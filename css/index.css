@@ -1,14 +1,42 @@
-html, body {
-    margin: 0;
+html, body{
+    margin: 0px, 15px, 10px;
     padding: 0;
 }
 
-.line {
+.center{
+    margin: auto;
+    width: 80%;
+    padding: 10px;
+}
+
+.header{
+    text-align: center;
+}
+
+.line-chart{
+      background-color: #C7D9D9;
+      margin: 0 auto;
+      display: block;
+}
+
+.line{
   fill: none;
   stroke: steelblue;
   stroke-width: 2px;
 }
 
-.area {
+.area{
   fill: lightsteelblue;
+}
+
+.footer{
+    text-align: right;
+    font-size: small;
+    font-style: italic;
+}
+
+#wholepage{
+    width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
