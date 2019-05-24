@@ -47,86 +47,115 @@ var height = svgHeight - margin.top - margin.bottom;
 
 var svg = d3.select('svg')
             .attr("width", svgWidth)
-            .attr("height", svgHeight);
-    
-var g = svg.append("g")
-           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("height", svgHeight)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// define range and domain
+// add x axis
 var x = d3.scaleTime()
-          .range([0, width]);
+      .domain(d3.extent(data, function(d) { return d.date; }))
+      .range([ 0, width ]);
 
+xAxis = svg.append("g")
+           .attr("transform", "translate(0," + height + ")")
+           .call(d3.axisBottom(x));
+
+// add y axis
 var y = d3.scaleLinear()
-          .range([height, 0]);
+          .domain([0, d3.max(data, function(d) { return +d.value; })])
+          .range([ height, 0 ]);
+yAxis = svg.append("g")
+           .call(d3.axisLeft(y));
 
-// define x-axis and y-axis
-var xAxis = d3.axisBottom()
-              .scale(x)
-              .tickSize(-height);
-              
-var yAxis = d3.axisLeft()
-              .scale(y);
+// define a clip-path so that everything out of this area won't be drawn later
+var clip = svg.append("defs")
+              .append("svg:clipPath")
+              .attr("id", "clip")
+              .append("svg:rect")
+              .attr("width", width )
+              .attr("height", height )
+              .attr("x", 0)
+              .attr("y", 0);
 
-// define area and line
+// define brushing
+var brush = d3.brushX()                   
+              .extent([[0,0], [width, height]])  
+              .on("end", updateChart);               
+
+// define line
+var line = svg.append("g")
+              .attr("clip-path", "url(#clip)");
+
+// define area
 var area = d3.area()
              .x(function(d) { return x(d.date); })
              .y0(height)
-             .y1(function(d) { return y(d.value); });
+             .y1(function(d) {return y(d.value); });
              
-var line = d3.line()
-             .x(function(d) { return x(d.date); })
-             .y(function(d) { return y(d.value); })
-    
-// scale range of data
-x.domain(d3.extent(data, function(d) { return d.date; }));
-y.domain(d3.extent(data, function(d) { return d.value; }));
-
-// add x axis
-g.append("g")
- .attr("transform", "translate(0," + height + ")")
- .call(d3.axisBottom(x))
- .select(".domain");
-
-// add y axis
-g.append("g")
- .call(d3.axisLeft(y))
- .append("text")
- .attr("fill", "#000")
- .attr("transform", "rotate(-90)")
- .attr("y", 6)
- .attr("dy", "0.71em")
- .attr("text-anchor", "end")
- .text("Price ($)");
-
 // add area under line
-g.append("path")
- .datum(data)
- .attr("class", "area")
- .attr("d", area);
- 
+line.append("path")
+    .datum(data)
+    .attr("class", "area")
+    .attr("d", area);
+    
 // add line
-g.append("path")
- .datum(data)
- .attr("class", "line")
- .attr("fill", "none")
- .attr("stroke", "steelblue")
- .attr("stroke-linejoin", "round")
- .attr("stroke-linecap", "round")
- .attr("stroke-width", 1.5)
- .attr("d", line);
+line.append("path")
+    .datum(data)
+    .attr("class", "line") 
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+    .x(function(d) { return x(d.date) })
+    .y(function(d) { return y(d.value) }));
 
-// g.datum(data)
-//  .on("click", click);
+// add brushing
+line.append("g")
+    .attr("class", "brush")
+    .call(brush);
 
-// function click() {
-//     var n = data.length - 1,
-//         i = Math.floor(Math.random() * n / 2),
-//         j = i + Math.floor(Math.random() * n / 2) + 1;
-//     x.domain([data[i].date, data[j].date]);
-//     var t = g.transition().duration(15);
-//     t.select(".x.axis").call(xAxis);
-//     t.select(".area").attr("d", area);
-//     t.select(".line").attr("d", line);
-//   };
+// credit: https://www.d3-graph-gallery.com/graph/line_brushZoom.html
+// A function that set idleTimeOut to null
+var idleTimeout;
+function idled() { idleTimeout = null; }
 
+// A function that update the chart for given boundaries
+function updateChart() {
+
+// What are the selected boundaries?
+extent = d3.event.selection
+
+// If no selection, back to initial coordinate. Otherwise, update X axis domain
+if(!extent){
+    if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
+        x.domain([4, 8])
+    }else{
+        x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
+        line.select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
+    }
+
+// Update axis and line position
+xAxis.transition().duration(15).call(d3.axisBottom(x))
+line.select(".area").transition().duration(15).attr("d", area)
+line.select('.line')
+    .transition()
+    .duration(15)
+    .attr("d", d3.line()
+                 .x(function(d) { return x(d.date) })
+                 .y(function(d) { return y(d.value) }))
 }
+
+// If user double click, reinitialize the chart
+svg.on("dblclick",function(){
+    x.domain(d3.extent(data, function(d) { return d.date; }))
+    xAxis.transition().call(d3.axisBottom(x))
+    line.select(".area").transition().attr("d", area)
+    line.select('.line')
+        .transition()
+        .attr("d", d3.line()
+          .x(function(d) { return x(d.date) })
+          .y(function(d) { return y(d.value) })
+      )
+    });
+
+};
