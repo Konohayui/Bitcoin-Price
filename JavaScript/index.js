@@ -1,17 +1,13 @@
-// var start = document.getElementById("StartDate").value;
-// var end = document.getElementById("EndDate").value;
-
-// const api = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=' + state + '&end=' + end;
-
 //https://www.coindesk.com/api
 //API to fetch historical data of Bitcoin Price Index
-const api = 'https://api.coindesk.com/v1/bpi/historical/close.json';
+
+// api = getAPI();
 
 /**
  * Loading data from API when DOM Content has been loaded'.
  */
 document.addEventListener("DOMContentLoaded", function(event) {
-fetch(api)
+fetch(getAPI())
     .then(function(response) { return response.json(); })
     .then(function(data) {
         var parsedData = parseData(data);
@@ -19,6 +15,11 @@ fetch(api)
     })
     .catch(function(err) { console.log(err); })
 });
+
+function getAPI(start = null, end = null) {
+    if (start === null && end === null) return 'https://api.coindesk.com/v1/bpi/historical/close.json';
+    else return 'https://api.coindesk.com/v1/bpi/historical/close.json?start=' + start + '&end=' + end;
+};
 
 /**
  * Parse data into key-value pairs
@@ -45,7 +46,7 @@ var margin = { top: 20, right: 20, bottom: 30, left: 50 };
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
-var svg = d3.select('svg')
+var svg = d3.select("svg")
             .attr("width", svgWidth)
             .attr("height", svgHeight)
             .append("g")
@@ -114,6 +115,7 @@ line.append("g")
     .attr("class", "brush")
     .call(brush);
 
+//
 // credit: https://www.d3-graph-gallery.com/graph/line_brushZoom.html
 // A function that set idleTimeOut to null
 var idleTimeout;
@@ -137,7 +139,7 @@ if(!extent){
 // Update axis and line position
 xAxis.transition().duration(15).call(d3.axisBottom(x))
 line.select(".area").transition().duration(15).attr("d", area)
-line.select('.line')
+line.select(".line")
     .transition()
     .duration(15)
     .attr("d", d3.line()
@@ -150,12 +152,13 @@ svg.on("dblclick",function(){
     x.domain(d3.extent(data, function(d) { return d.date; }))
     xAxis.transition().call(d3.axisBottom(x))
     line.select(".area").transition().attr("d", area)
-    line.select('.line')
+    line.select(".line")
         .transition()
         .attr("d", d3.line()
           .x(function(d) { return x(d.date) })
           .y(function(d) { return y(d.value) })
       )
     });
+//
 
 };
