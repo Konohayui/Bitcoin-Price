@@ -2,24 +2,32 @@
 <html lang = "en">
     <head>
         <meta charset = "UTF-8">
-        <link rel="stylesheet" href="css/index.css">
-        <title>Bitcoin Price in the Past 30 Days</title>
+        <link rel="stylesheet" href="index.css">
+        <title> Bitcoin Price </title>
     </head>
     <body>
         <div id = "wholepage" class = "center">
-        <div class = "header"><h1>Bitcoin Price in the Past 30 Days</h1></div>
+        <div class = "header"><h1><img src="https://en.bitcoin.it/w/images/en/6/69/Btc-sans.png"
+                                        height="50"
+                                        width="50">
+                                Bitcoin Price
+                              </h1></div>
         <hr>
-                
-        <!--
-        <from action = "/action_page.php">
-        Start Date: <input type = "text" name = "StateDate" id = "StateDate", value = "2018-12-31"><br>
-        End Date: <input type = "text" name = "EndDate" id = "EndDate" value = "2019-05-01"><br>
-        <input type = "submit" value = "submit">
-        </from>
-        -->
-        
+        <p>By default, the chart will display past 30 days' prices.</p>
         <br>
-        
+        <p>
+           Start Date: <input type="text" name="start_date" id="start_date" 
+                              placeholder="yyyy-mm-dd" pattern=".*-.*-.*">
+           <br>
+           End Date: <input type="text" name="end_date" id="end_date"
+                            placeholder="yyyy-mm-dd" pattern=".*-.*-.*">
+           <br>
+           <button onclick = "getAPI(start=document.getElementById('start_date').value,
+                                     end=document.getElementById('end_date').value)">
+           Update Date
+           </button>
+        </p>
+           
         <svg class="line-chart"></svg>
         
         <hr>
@@ -27,6 +35,6 @@
         </div>
         
         <script src="https://d3js.org/d3.v4.js"></script>
-        <script src="JavaScript/index.js"></script>
+        <script src="index.js"></script>
     </body>
 </html>
