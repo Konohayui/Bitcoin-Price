@@ -6,8 +6,11 @@
 /**
  * Loading data from API when DOM Content has been loaded'.
  */
+
+api = getAPI();
+
 document.addEventListener("DOMContentLoaded", function(event) {
-fetch(getAPI())
+fetch(api)
     .then(function(response) { return response.json(); })
     .then(function(data) {
         var parsedData = parseData(data);
