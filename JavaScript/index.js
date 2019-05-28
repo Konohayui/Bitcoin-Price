@@ -1,27 +1,68 @@
+// special document elements
+var yesterday_id = "#yesterday";
+var five_months_id = "#five-month";
+var one_year_id = "#one-year";
+var five_years_id = "#five-years";
+
+createChart();
+
+// update chart
+function get_yesterday() {
+    createChart(d = 2)
+};
+function get_five_months() {
+    createChart(d = 152)
+};
+function get_one_year() {
+    createChart(d = 356)
+};
+function get_five_years() {
+    createChart(d = 1825)
+};
+
 //https://www.coindesk.com/api
 //API to fetch historical data of Bitcoin Price Index
-
-// api = getAPI();
 
 /**
  * Loading data from API when DOM Content has been loaded'.
  */
 
-api = getAPI();
-
-document.addEventListener("DOMContentLoaded", function(event) {
-fetch(api)
-    .then(function(response) { return response.json(); })
-    .then(function(data) {
-        var parsedData = parseData(data);
-        drawChart(parsedData);
-    })
-    .catch(function(err) { console.log(err); })
+function createChart(d = null) {document.addEventListener("DOMContentLoaded", function(event) {
+    api = getJSON(days = d);
+    fetch(api).then(function(response) { return response.json(); })
+              .then(function(data) {
+                  var parsedData = parseData(data);
+                  drawChart(parsedData);
+                  })
+              .catch(function(err) { console.log(err); })
 });
+};
 
-function getAPI(start = null, end = null) {
-    if (start === null && end === null) return 'https://api.coindesk.com/v1/bpi/historical/close.json';
-    else return 'https://api.coindesk.com/v1/bpi/historical/close.json?start=' + start + '&end=' + end;
+function getJSON(days = null) {
+    if (days === null) {return 'https://api.coindesk.com/v1/bpi/historical/close.json'}
+    else {var start = updateDate(days);
+          var end = formatDate(new Date());
+          return 'https://api.coindesk.com/v1/bpi/historical/close.json?start=' + start + '&end=' + end}
+};
+
+// get end date
+function updateDate(days) {
+    var currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() - days);
+    return formatDate(currentDate);
+};
+
+// format date to YYYY-MM-DD
+function formatDate(date) {
+    var d = new Date(date);
+    var month = "" + (d.getMonth() + 1);
+    var day = "" + d.getDate();
+    var year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
 };
 
 /**
