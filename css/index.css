@@ -3,6 +3,13 @@ html, body{
     padding: 0;
 }
 
+body {
+    background: #000006;
+    overflow-x: hidden;
+    line-height: 0;
+    color: #eee;
+}
+
 .center{
     margin: auto;
     width: 80%;
@@ -14,7 +21,7 @@ html, body{
 }
 
 .line-chart{
-      background-color: #C7D9D9;
+      background-color: #ffff;
       margin: 0 auto;
       display: block;
 }
@@ -33,6 +40,19 @@ html, body{
     text-align: right;
     font-size: small;
     font-style: italic;
+}
+
+.text-button:hover, .text-button:focus {
+    color: #C7D9D9;
+    transition: color 125ms ease-in;
+    -webkit-transition: color 125ms ease-in;
+    cursor: default;
+}
+
+.text-button:active {
+    color: #fff;
+    transition: color 25ms ease-in;
+    -webkit-transition: color 25ms ease-in;
 }
 
 #wholepage{
