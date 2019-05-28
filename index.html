@@ -7,34 +7,48 @@
     </head>
     <body>
         <div id = "wholepage" class = "center">
-        <div class = "header"><h1><img src="https://en.bitcoin.it/w/images/en/6/69/Btc-sans.png"
+        <div class = "header"><h1><img src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png"
                                         height="50"
                                         width="50">
                                 Bitcoin Price
                               </h1></div>
         <hr>
-        <p>By default, the chart will display past 30 days' prices.</p>
+        <center><p>The chart displays the lastest 30 days' price by default!</p></center>
         <br>
-        <p>
-           Start Date: <input type="text" name="start_date" id="start_date" 
-                              placeholder="yyyy-mm-dd" pattern=".*-.*-.*">
-           <br>
-           End Date: <input type="text" name="end_date" id="end_date"
-                            placeholder="yyyy-mm-dd" pattern=".*-.*-.*">
-           <br>
-           <button onclick = "getAPI(start=document.getElementById('start_date').value,
-                                     end=document.getElementById('end_date').value)">
-           Update Date
-           </button>
-        </p>
-           
+        <p>Today is: <span id = "current-date"></span></p>
+        <div id = "time_period">
+            <span>Time Period</span>
+            <span> -|《 </span>
+            <span class = "text-button" id = "yesterday" onclick="get_yesterday()"> Yesterday </span>
+            <span> 》|《 </span>
+            <span class = "text-button" id = "five-months" onclick="get_five_months()"> Five Month </span>
+            <span> 》|《 </span>
+            <span class = "text-button" id = "one-year" onclick="get_one_year()"> One Year </span>
+            <span> 》|《 </span>
+            <span class = "text-button" id = "five-years" onclick="get_five_years()"> Five Years </span>
+            <span> 》|- </span>
+        </div>
+        <br>
+        <p></p>
         <svg class="line-chart"></svg>
         
         <hr>
         <div class = "footer"><p>Data is from <a href = "https://www.coindesk.com/"> coindesk </a >.</p></div>
         </div>
-        
+
+<!-- JavaScript -->
+        <script>
+            var currentDate = new Date();
+            var currentDay = currentDate.getDate();
+            var currentMonth = currentDate.getMonth() + 1;
+            var currentYear = currentDate.getFullYear();
+            var today = [currentMonth, currentDay, currentYear].join("-");
+
+            document.getElementById("current-date").innerHTML = today;
+        </script>
         <script src="https://d3js.org/d3.v4.js"></script>
         <script src="JavaScript/index.js"></script>
+<!-- -->
+
     </body>
 </html>
