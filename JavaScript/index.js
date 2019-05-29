@@ -1,23 +1,26 @@
 // special document elements
-var yesterday_id = "#yesterday";
+var one_week_id = "#one-week";
 var five_months_id = "#five-month";
 var one_year_id = "#one-year";
 var five_years_id = "#five-years";
 
-createChart();
+main();
 
-// update chart
-function get_yesterday() {
-    createChart(d = 2)
-};
-function get_five_months() {
-    createChart(d = 152)
-};
-function get_one_year() {
-    createChart(d = 356)
-};
-function get_five_years() {
-    createChart(d = 1825)
+function main() {
+    createChart();
+    // update chart
+    function get_one_week() {
+        createChart(d = 7)
+    };
+    function get_five_months() {
+        createChart(d = 152)
+    };
+    function get_one_year() {
+        createChart(d = 356)
+    };
+    function get_five_years() {
+        createChart(d = 1825)
+    };
 };
 
 //https://www.coindesk.com/api
@@ -39,10 +42,10 @@ function createChart(d = null) {document.addEventListener("DOMContentLoaded", fu
 };
 
 function getJSON(days = null) {
-    if (days === null) {return 'https://api.coindesk.com/v1/bpi/historical/close.json'}
+    if (days === null) {return "https://api.coindesk.com/v1/bpi/historical/close.json"}
     else {var start = updateDate(days);
           var end = formatDate(new Date());
-          return 'https://api.coindesk.com/v1/bpi/historical/close.json?start=' + start + '&end=' + end}
+          return "https://api.coindesk.com/v1/bpi/historical/close.json?start=" + start + "&end=" + end}
 };
 
 // get end date
@@ -159,7 +162,7 @@ line.append("g")
     .attr("class", "brush")
     .call(brush);
 
-//
+// ------------------------------------------------------------------
 // credit: https://www.d3-graph-gallery.com/graph/line_brushZoom.html
 // A function that set idleTimeOut to null
 var idleTimeout;
@@ -203,6 +206,6 @@ svg.on("dblclick",function(){
           .y(function(d) { return y(d.value) })
       )
     });
-//
+// ------------------------------------------------------------------
 
 };
