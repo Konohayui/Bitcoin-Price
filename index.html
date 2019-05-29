@@ -2,7 +2,7 @@
 <html lang = "en">
     <head>
         <meta charset = "UTF-8">
-        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="index.css">
         <title> Bitcoin Price </title>
     </head>
     <body>
@@ -15,17 +15,17 @@
         <hr>
         <center><p>The chart displays the lastest 30 days' price by default!</p></center>
         <br>
-        <p>Today is: <span id = "current-date"></span></p>
+        <p>Today is <span id = "current-date"></span>.</p>
         <div id = "time_period">
             <span>Time Period</span>
             <span> -|《 </span>
-            <span class = "text-button" id = "yesterday" onclick="get_yesterday()"> Yesterday </span>
+            <span class = "text-button" id = "one-week" onclick="get_one_week();"> One Week </span>
             <span> 》|《 </span>
-            <span class = "text-button" id = "five-months" onclick="get_five_months()"> Five Month </span>
+            <span class = "text-button" id = "five-months" onclick="get_five_months();"> Five Month </span>
             <span> 》|《 </span>
-            <span class = "text-button" id = "one-year" onclick="get_one_year()"> One Year </span>
+            <span class = "text-button" id = "one-year" onclick="get_one_year();"> One Year </span>
             <span> 》|《 </span>
-            <span class = "text-button" id = "five-years" onclick="get_five_years()"> Five Years </span>
+            <span class = "text-button" id = "five-years" onclick="get_five_years();"> Five Years </span>
             <span> 》|- </span>
         </div>
         <br>
@@ -33,6 +33,10 @@
         <svg class="line-chart"></svg>
         
         <hr>
+        <div id = "about">
+            <h3>About</h3>
+            <p>Modules <span>-|</span><a href = "https://d3js.org/">D3.js</a><span>-|</span></p>
+        </div>
         <div class = "footer"><p>Data is from <a href = "https://www.coindesk.com/"> coindesk </a >.</p></div>
         </div>
 
@@ -43,11 +47,10 @@
             var currentMonth = currentDate.getMonth() + 1;
             var currentYear = currentDate.getFullYear();
             var today = [currentMonth, currentDay, currentYear].join("-");
-
             document.getElementById("current-date").innerHTML = today;
         </script>
         <script src="https://d3js.org/d3.v4.js"></script>
-        <script src="JavaScript/index.js"></script>
+        <script src="index.js"></script>
 <!-- -->
 
     </body>
