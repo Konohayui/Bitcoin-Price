@@ -4,24 +4,7 @@ var five_months_id = "#five-month";
 var one_year_id = "#one-year";
 var five_years_id = "#five-years";
 
-main();
-
-function main() {
-    createChart();
-    // update chart
-    function get_one_week() {
-        createChart(d = 7)
-    };
-    function get_five_months() {
-        createChart(d = 152)
-    };
-    function get_one_year() {
-        createChart(d = 356)
-    };
-    function get_five_years() {
-        createChart(d = 1825)
-    };
-};
+createChart(null);
 
 //https://www.coindesk.com/api
 //API to fetch historical data of Bitcoin Price Index
@@ -30,8 +13,8 @@ function main() {
  * Loading data from API when DOM Content has been loaded'.
  */
 
-function createChart(d = null) {document.addEventListener("DOMContentLoaded", function(event) {
-    api = getJSON(days = d);
+function createChart(days) {document.addEventListener("DOMContentLoaded", function(event) {
+    api = getJSON(days);
     fetch(api).then(function(response) { return response.json(); })
               .then(function(data) {
                   var parsedData = parseData(data);
