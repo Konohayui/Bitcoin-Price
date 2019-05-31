@@ -4,7 +4,7 @@ var five_months_id = "#five-month";
 var one_year_id = "#one-year";
 var five_years_id = "#five-years";
 
-createChart(null);
+createChart(null)
 
 //https://www.coindesk.com/api
 //API to fetch historical data of Bitcoin Price Index
@@ -22,11 +22,11 @@ function createChart(days) {document.addEventListener("DOMContentLoaded", functi
                   })
               .catch(function(err) { console.log(err); })
 });
-};
+}
 
 function getJSON(days = null) {
     if (days === null) {return "https://api.coindesk.com/v1/bpi/historical/close.json"}
-    else {var start = updateDate(days);
+    else {var start = updateDate(parseInt(days));
           var end = formatDate(new Date());
           return "https://api.coindesk.com/v1/bpi/historical/close.json?start=" + start + "&end=" + end}
 };
