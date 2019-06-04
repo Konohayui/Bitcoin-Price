@@ -1,10 +1,16 @@
 // special document elements
-var one_week_id = "#one-week";
-var five_months_id = "#five-month";
-var one_year_id = "#one-year";
-var five_years_id = "#five-years";
+var one_month_id = "one-month";
+var five_months_id = "five-months";
+var one_year_id = "one-year";
+var five_years_id = "five-years";
 
-createChart(null)
+document.getElementById(one_month_id).onclick = function() { d3.selectAll("svg > *").remove(); drawChart(31); };
+document.getElementById(five_months_id).onclick = function() { d3.selectAll("svg > *").remove(); drawChart(152); };
+document.getElementById(one_year_id).onclick = function() { d3.selectAll("svg > *").remove(); drawChart(356); };
+document.getElementById(five_years_id).onclick = function() { d3.selectAll("svg > *").remove(); drawChart(1825); };
+
+// createChart(null);
+drawChart(null)
 
 //https://www.coindesk.com/api
 //API to fetch historical data of Bitcoin Price Index
@@ -13,16 +19,16 @@ createChart(null)
  * Loading data from API when DOM Content has been loaded'.
  */
 
-function createChart(days) {document.addEventListener("DOMContentLoaded", function(event) {
-    api = getJSON(days);
-    fetch(api).then(function(response) { return response.json(); })
-              .then(function(data) {
-                  var parsedData = parseData(data);
-                  drawChart(parsedData);
-                  })
-              .catch(function(err) { console.log(err); })
-});
-}
+// function createChart(days) {document.addEventListener("DOMContentLoaded", function(event) {
+//     var api = getJSON(days);
+//     fetch(api).then(function(response) { return response.json(); })
+//               .then(function(data) {
+//                   var parsedData = parseData(data);
+//                   drawChart(parsedData);
+//                   })
+//               .catch(function(err) { console.log(err); })
+// });
+// };
 
 function getJSON(days = null) {
     if (days === null) {return "https://api.coindesk.com/v1/bpi/historical/close.json"}
@@ -66,17 +72,17 @@ function parseData(data) {
     return arr;
 }
 
-/**
- * Creates a chart using D3
- * @param {object} data Object containing historical data of BPI
- */
-function drawChart(data) {
+// drawChart(data)
+function drawChart(days) {
+api = getJSON(days)
+d3.json(api, function(error, data) {
+data = parseData(data);
 var svgWidth = 600, svgHeight = 400;
 var margin = { top: 20, right: 20, bottom: 30, left: 50 };
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
-var svg = d3.select("svg")
+var svg = d3.selectAll("svg")
             .attr("width", svgWidth)
             .attr("height", svgHeight)
             .append("g")
@@ -86,7 +92,6 @@ var svg = d3.select("svg")
 var x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.date; }))
       .range([ 0, width ]);
-
 xAxis = svg.append("g")
            .attr("transform", "translate(0," + height + ")")
            .call(d3.axisBottom(x));
@@ -191,4 +196,5 @@ svg.on("dblclick",function(){
     });
 // ------------------------------------------------------------------
 
-};
+})
+}
