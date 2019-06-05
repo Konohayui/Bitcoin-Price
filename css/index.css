@@ -43,7 +43,7 @@ body {
 }
 
 .text-button:hover, .text-button:focus {
-    color: #C7D9D9;
+    color: lightskyblue;
     transition: color 125ms ease-in;
     -webkit-transition: color 125ms ease-in;
     cursor: default;
